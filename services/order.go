@@ -3,6 +3,7 @@ package services
 import (
 	"5317c349-8ade-4a35-93c4-2401101056db/models"
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -36,6 +37,40 @@ func CreateOrder(req *models.CreateOrderRequest) (*models.Order, error) {
 	if err != nil {
 		return nil, err
 	}
+	return order, nil
+}
+
+func TakeOrder(req *models.TakeOrderRequst) (*models.Order, error) {
+	o := orm.NewOrm()
+
+	// start transaction
+	o.Begin()
+
+	// get order by orderID
+	order := &models.Order{
+		ID: req.OrderID,
+	}
+	err := o.Read(order)
+	if err != nil {
+		o.Rollback()
+		return nil, err
+	}
+
+	// update order status to TAKEN if it's not taken
+	if order.Status == "TAKEN" {
+		o.Rollback()
+		return nil, errors.New("ORDER_ALREADY_BEEN_TAKEN")
+	}
+	order.Status = "TAKEN"
+	_, err = o.Update(order, "Status")
+	if err != nil {
+		o.Rollback()
+		return nil, err
+	}
+
+	// commit transation
+	o.Commit()
+
 	return order, nil
 }
 

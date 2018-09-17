@@ -25,3 +25,15 @@ func NewCreateOrderResponse(order *Order) *CreateOrderResponse {
 		Status:   order.Status,
 	}
 }
+
+// take order response
+type TakeOrderResponse struct {
+	Status string `json:"status"`
+}
+
+// create an take order response
+func NewTakeOrderResponse() *TakeOrderResponse {
+	return &TakeOrderResponse{
+		Status: "SUCCESS",
+	}
+}
