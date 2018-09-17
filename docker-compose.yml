@@ -1,8 +1,9 @@
-version: "2.1"
+version: "2"
 
 services:
   order-mysql:
     image: "mysql"
+    container_name: "order-mysql"
     networks:
       order-net:
         ipv4_address: 10.5.0.5
@@ -12,6 +13,7 @@ services:
       - "MYSQL_ROOT_PASSWORD=password"
   order-api-main:
     image: "order-api"
+    container_name: "order-api-main"
     networks:
       order-net:
         ipv4_address: 10.5.0.6
