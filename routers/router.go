@@ -9,4 +9,5 @@ import (
 func init() {
 	beego.Router("/order", &controllers.CreateOrderController{})
 	beego.Router("/order/:id", &controllers.TakeOrderController{})
+	beego.Router("/orders", &controllers.ListOrdersController{})
 }

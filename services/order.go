@@ -74,6 +74,23 @@ func TakeOrder(req *models.TakeOrderRequst) (*models.Order, error) {
 	return order, nil
 }
 
+func ListOrders(req *models.ListOrdersRequest) ([]*models.Order, error) {
+	o := orm.NewOrm()
+
+	// calculate from, pageSize
+	from := (req.Page - 1) * req.Limit
+	pageSize := req.Limit
+
+	// get orders from DB
+	var orders []*models.Order
+	_, err := o.Raw("SELECT * FROM `order` LIMIT ?,?", from, pageSize).QueryRows(&orders)
+	if err != nil {
+		return nil, err
+	}
+
+	return orders, nil
+}
+
 func getDistance(origin []string, destination []string) (float64, error) {
 	r := &maps.DistanceMatrixRequest{
 		Origins:      []string{fmt.Sprintf("%s,%s", origin[0], origin[1])},

@@ -9,3 +9,8 @@ type TakeOrderRequst struct {
 	OrderID string
 	Status  string `json:"status"`
 }
+
+type ListOrdersRequest struct {
+	Page  int
+	Limit int
+}

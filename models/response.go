@@ -37,3 +37,23 @@ func NewTakeOrderResponse() *TakeOrderResponse {
 		Status: "SUCCESS",
 	}
 }
+
+type ListOrderEntry struct {
+	ID       string  `json:"id"`
+	Distance float64 `json:"distance"`
+	Status   string  `json:"status"`
+}
+
+type ListOrdersResponse []*ListOrderEntry
+
+func NewListOrdersResponse(orders []*Order) ListOrdersResponse {
+	listOrdersResp := ListOrdersResponse{}
+	for _, order := range orders {
+		listOrdersResp = append(listOrdersResp, &ListOrderEntry{
+			ID:       order.ID,
+			Distance: order.Distance,
+			Status:   order.Status,
+		})
+	}
+	return listOrdersResp
+}
