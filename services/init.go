@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -17,11 +18,19 @@ var googleMapsClient *maps.Client
 func init() {
 	// init mongo db
 	env := beego.AppConfig.String("runmode")
+	host := beego.AppConfig.String(env + "::mysql_host")
 	user := beego.AppConfig.String(env + "::mysql_user")
 	pass := beego.AppConfig.String(env + "::mysql_pass")
 	db := beego.AppConfig.String(env + "::mysql_db")
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@/%s?charset=utf8", user, pass, db))
+	for {
+		err := orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8", user, pass, host, db))
+		if err == nil {
+			break
+		}
+		fmt.Println("MySQL is not ready, sleep 10s...")
+		time.Sleep(10 * time.Second)
+	}
 	orm.RegisterModel(new(models.Order))
 
 	// init google map api

@@ -1,0 +1,29 @@
+version: "2.1"
+
+services:
+  order-mysql:
+    image: "mysql"
+    networks:
+      order-net:
+        ipv4_address: 10.5.0.5
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=password"
+  order-api-main:
+    image: "order-api"
+    networks:
+      order-net:
+        ipv4_address: 10.5.0.6
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "order-mysql"
+
+networks:
+  order-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
