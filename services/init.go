@@ -25,5 +25,5 @@ func init() {
 
 	// init google map api
 	apiKey := beego.AppConfig.String("google_map_api_key")
-	googleMapsClient, _ := maps.NewClient(maps.WithAPIKey(apiKey))
+	googleMapsClient, _ = maps.NewClient(maps.WithAPIKey(apiKey))
 }
