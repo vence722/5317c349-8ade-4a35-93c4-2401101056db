@@ -1,4 +1,8 @@
-CREATE TABLE `order` (
+CREATE DATABASE IF NOT EXISTS `orders`;
+
+USE `orders`
+
+CREATE TABLE IF NOT EXISTS `order` (
   `id` varchar(128) NOT NULL DEFAULT '',
   `origin_latitude` double NOT NULL DEFAULT '0',
   `origin_longitude` double NOT NULL DEFAULT '0',
