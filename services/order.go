@@ -53,7 +53,7 @@ func TakeOrder(req *models.TakeOrderRequst) (*models.Order, error) {
 	err := o.Read(order)
 	if err != nil {
 		o.Rollback()
-		return nil, err
+		return nil, errors.New("ORDER_NOT_FOUND")
 	}
 
 	// update order status to TAKEN if it's not taken

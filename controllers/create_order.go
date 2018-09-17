@@ -18,6 +18,7 @@ func (this *CreateOrderController) Post() {
 	req := &models.CreateOrderRequest{}
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return
@@ -26,6 +27,7 @@ func (this *CreateOrderController) Post() {
 	// validate request params
 	err = validators.ValidateCreateOrderRequest(req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return
@@ -34,6 +36,7 @@ func (this *CreateOrderController) Post() {
 	// call create order service
 	order, err := services.CreateOrder(req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return

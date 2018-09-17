@@ -18,12 +18,14 @@ func (this *ListOrdersController) Get() {
 	req := &models.ListOrdersRequest{}
 	page, err := this.GetInt("page")
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(errors.New("page must be integer > 0"))
 		this.ServeJSON()
 		return
 	}
 	limit, err := this.GetInt("limit")
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(errors.New("limit must be integer > 0"))
 		this.ServeJSON()
 		return
@@ -34,6 +36,7 @@ func (this *ListOrdersController) Get() {
 	// validate request params
 	err = validators.ValidateListOrdersRequest(req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return
@@ -42,6 +45,7 @@ func (this *ListOrdersController) Get() {
 	// call create order service
 	orders, err := services.ListOrders(req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return

@@ -29,6 +29,7 @@ func (this *TakeOrderController) Put() {
 	// validate request params
 	err = validators.ValidateTakeOrderRequest(req)
 	if err != nil {
+		this.Ctx.Output.SetStatus(500)
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return
@@ -37,6 +38,11 @@ func (this *TakeOrderController) Put() {
 	// call take order service
 	_, err = services.TakeOrder(req)
 	if err != nil {
+		if err.Error() == "ORDER_ALREADY_BEEN_TAKEN" {
+			this.Ctx.Output.SetStatus(409)
+		} else {
+			this.Ctx.Output.SetStatus(500)
+		}
 		this.Data["json"] = models.NewErrorResponse(err)
 		this.ServeJSON()
 		return
