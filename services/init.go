@@ -16,9 +16,10 @@ var googleMapsClient *maps.Client
 
 func init() {
 	// init mongo db
-	user := beego.AppConfig.String("mysql_user")
-	pass := beego.AppConfig.String("mysql_pass")
-	db := beego.AppConfig.String("mysql_db")
+	env := beego.AppConfig.String("runmode")
+	user := beego.AppConfig.String(env + "::mysql_user")
+	pass := beego.AppConfig.String(env + "::mysql_pass")
+	db := beego.AppConfig.String(env + "::mysql_db")
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@/%s?charset=utf8", user, pass, db))
 	orm.RegisterModel(new(models.Order))
