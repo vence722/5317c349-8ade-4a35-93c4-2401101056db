@@ -65,7 +65,7 @@ func TakeOrder(req *models.TakeOrderRequst) (*models.Order, error) {
 	order.Status = "TAKEN"
 	// update UpdatedAt
 	order.UpdatedAt = time.Now()
-	_, err = o.Update(order, "Status", "UpdatedAt")
+	_, err = o.Update(order)
 	if err != nil {
 		o.Rollback()
 		return nil, err
